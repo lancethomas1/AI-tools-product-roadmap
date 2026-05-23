@@ -63,7 +63,7 @@ Most tools work for both modes, but Stage 1 (PRD drafting) is explicitly **green
 Build/adopt this quarter. Highest value-to-effort, unlocks daily-use habits.
 
 - **PRD drafting assistant** *(Stage 1 — Drafting)* — Generate a first-draft PRD from a one-paragraph brief using the team's template. Suggests problem framing, success metrics, and open questions to resolve. Output structured for downstream consumption.
-- **Story & ticket writer** *(Stage 2 — Planning)* — Convert PM bullet points or a PRD section into properly formatted user stories with acceptance criteria, sized for the team's Definition of Ready. Reads from the spine PRD.
+- **Story & ticket writer** *(Stage 2 — Planning)* — Convert PM bullet points or a PRD section into properly formatted user stories with acceptance criteria, sized for the team's Definition of Ready. Reads from the spine PRD. ([spec](specs/story-ticket-writer.md))
 - **Release notes generator** *(Stage 4 — Release)* — Synthesize merged PRs and shipped tickets under a Jira epic into customer-facing release notes, internal changelog, and a Slack announcement variant.
 - **Weekly status synthesizer** *(Stage 3 — Execution)* — Pull from Linear/Jira, GitHub, and Slack threads tied to active epics to draft the PM's weekly team and exec updates. PM edits, then sends.
 
