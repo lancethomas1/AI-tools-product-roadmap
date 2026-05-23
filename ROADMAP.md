@@ -71,7 +71,7 @@ Build/adopt this quarter. Highest value-to-effort, unlocks daily-use habits.
 
 Plan for 1–2 quarters out. Higher value but requires more integration and trust-building.
 
-- **Backlog grooming copilot** *(Stage 3 — Execution)* — Flags duplicates, suggests merges, surfaces stale items, and proposes priority changes based on linked goals or customer signal.
+- **Backlog grooming copilot** *(Stage 3 — Execution)* — Flags duplicates, suggests merges, surfaces stale items, and proposes priority changes based on linked goals or customer signal. ([spec](specs/backlog-grooming-copilot.md))
 - **Stakeholder comms tailoring** *(Stage 4 — Release)* — Turn one PM-written update into audience-tuned variants (exec, sales, eng, CS) with appropriate framing and detail level.
 - **Spec → sprint decomposer** *(Stage 2 — Planning)* — Take a PRD and propose a sprint-ready ticket breakdown with estimates, dependencies, and a draft milestone plan for engineering review.
 - **Meeting → artifact pipeline** *(Stage 3 — Execution)* — Turn sync notes into action items, ticket drafts, or PRD updates with attribution back to who said what.
