@@ -9,6 +9,25 @@
 
 Unlike PRD drafting (kickoff-bound), story writing (refinement-bound), or release notes (ship-bound), backlog grooming is a continuous tax the backlog levies every week, on every active project, regardless of where individual features sit in their lifecycle. The cost compounds linearly with backlog size — and backlogs only grow. A copilot here has phase-independent ROI and produces the cleanest weekly signal on whether PMs will trust AI-generated judgment calls, which de-risks every later tool on the roadmap.
 
+## What we mean by "grooming"
+
+"Grooming" means different things in different PM shops, so the scope here is explicit. This tool covers **maintenance hygiene on the existing backlog** — keeping the database tidy, accurate, and ranked so that human prioritization happens on a clean foundation.
+
+**In our definition:**
+- De-duplication (detect, suggest merges, prevent new dups at file time)
+- Stale-item pruning (surface what's gone cold and likely dead)
+- Priority drift detection (flag rank that no longer matches linked goals or customer signal)
+- Pre-meeting synthesis (turn the raw backlog into a focused shortlist for the actual grooming session)
+
+**Adjacent activities others sometimes call grooming, handled by other roadmap tools:**
+- Refinement to "Ready" — acceptance criteria, story format, sizing → *Story & ticket writer* (Now)
+- Breaking epics into sprint-shaped tickets → *Spec → sprint decomposer* (Next)
+- Running the grooming meeting itself — facilitation, notes, action items → *Meeting → artifact pipeline* (Next)
+- Generating new tickets / discovery — out of scope across the roadmap horizon
+- Making the actual priority call — the copilot proposes drift, the PM decides; the tool never re-prioritizes autonomously
+
+The framing principle: this tool treats the backlog as a **database** (records, relationships, freshness), not as a **plan** (sequencing, scope, sizing). Cleaning the data is a precondition for the planning work but a distinct job.
+
 ## Problem
 
 Backlogs decay. Duplicates accumulate as different stakeholders file the same complaint in different words. Tickets go stale when the reporter loses interest or the world moves on. Priority drifts from stated goals because no one re-reads the backlog top-to-bottom. PMs spend 2–4 hours a week on grooming that is mostly pattern matching, not judgment — and they do it badly because the cognitive load of reading hundreds of tickets is real.
