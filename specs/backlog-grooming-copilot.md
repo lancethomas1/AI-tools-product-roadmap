@@ -116,15 +116,105 @@ For each open ticket with priority P:
 2. If `|P − expected| ≥ 1` priority band, emit a drift suggestion with the gap and contributing reasons.
 3. Ignore items the PM has manually re-prioritized in the last 14 days — respect the human override.
 
-## Evaluation plan
+## Evaluation criteria & metrics
 
-| Phase | Method | Pass bar |
+We measure on three independent layers. Hitting one without the others is a known failure mode — a 95%-precision model that PMs never look at, or high acceptance on suggestions that don't actually shrink the backlog. All three must move.
+
+### Layer 1 — Output quality
+
+What the model produces, measured against ground truth, independent of whether a PM acts on it.
+
+#### Duplicate detection
+
+| Metric | Definition | Alpha | Beta | GA |
+|---|---|---|---|---|
+| Precision @ 0.7 threshold | True dups / suggested dups | >0.80 | >0.85 | >0.90 |
+| Recall @ 0.7 threshold | Suggested true dups / all true dups in set | >0.50 | >0.60 | >0.70 |
+| Brier score (calibration) | MSE of confidence vs. outcome | <0.15 | <0.12 | <0.10 |
+| Adversarial pass rate | Paraphrased dup pairs the model must catch | >0.60 | >0.75 | >0.85 |
+
+**Datasets:**
+- **Hand-labeled golden set** — 200 ticket pairs per pilot project labeled by that project's PM. Refreshed quarterly.
+- **Historical ground truth** — items the PM merged or closed-as-duplicate in the past 6 months. Free and large, biased toward easy cases.
+- **Adversarial set** — ~50 manually constructed near-duplicates (same root cause, different wording, different customer surface) to test ceiling.
+- **Synthetic negatives** — pairs from different projects (must never match) injected at 10% rate to catch over-eager matching.
+
+#### Staleness
+
+| Metric | Definition | Pass bar |
 |---|---|---|
-| Alpha | Hand-label 200 ticket pairs per project as dup/not-dup; measure precision/recall | Precision >0.8 at recall >0.5 |
-| Alpha | PM rates each digest item: useful / noisy / wrong | ≥60% useful |
-| Beta | Track suggestion acceptance vs. dismissal in-product | Acceptance >40%, dismiss-no-review <15% |
-| Beta | Shadow-mode on 3 projects without surfacing; compare to PM-curated grooming one week later | ≥70% overlap on items PM also flagged |
-| GA | Continuous: weekly cohort of accepted-then-reverted suggestions | <5% revert rate |
+| False-stale rate | Flagged stale items the PM marks "active off-ticket" | <10% |
+| Catch rate | Stale items flagged before PM finds them in grooming | >70% of items PM marks stale |
+| Median age at flag | Days from staleness onset to surface | <14 days |
+
+Precision dominates over recall here — flagging an active conversation as stale erodes trust fast; missing one is recoverable next week.
+
+#### Priority drift
+
+| Metric | Definition | Pass bar |
+|---|---|---|
+| Expert agreement | Drift suggestions a senior PM endorses on a blind 50-item audit | >65% |
+| Override-respect rate | Suggestions violating the 14-day human-override cooldown | 0% (hard bar) |
+| Reason fidelity | Suggestions whose stated rationale checks out against linked goals/signals | >90% |
+
+### Layer 2 — Product behavior
+
+What PMs actually do with the output. Telemetry, not labels.
+
+| Metric | What it tells us | Pass bar |
+|---|---|---|
+| Digest open rate | Are PMs even looking? | >80% week 1, >60% week 8 (fatigue check) |
+| Suggestion review rate | Of digest items, how many get clicked into | >70% |
+| Acceptance rate | Of reviewed suggestions, how many get acted on | >40% |
+| Dismiss-no-review rate | Suggestions dismissed without opening detail | <15% |
+| Time-to-action | Median seconds from digest open → first action | <45s |
+| In-product rating | useful / noisy / wrong, weighted | >60% useful, <10% wrong |
+
+**Suggestion fatigue is the metric I'm most worried about.** Track digest open rate as a rolling 4-week window per PM; two consecutive down-weeks triggers a "tune your thresholds" prompt before that PM churns off the tool entirely.
+
+### Layer 3 — Backlog outcomes
+
+Whether the backlog actually gets healthier. The headline numbers — and the hardest to attribute.
+
+| Metric | Target | Measurement |
+|---|---|---|
+| Stale/duplicate count (rolling 30d) | -40% vs. pre-tool baseline | Monthly snapshot per project |
+| PM hours/week on grooming | -50% | Quarterly time survey + Linear/Jira activity proxy |
+| Median backlog age | -25% | Auto-computed from open-ticket timestamps |
+| Tickets resolved per active engineer | Flat-to-up (sanity: we're not just deleting work) | Linear/Jira |
+| Backlog-health NPS (PM-reported) | +15 points | Quarterly survey |
+
+**Counterfactual.** Shadow-mode beta gives one comparison point. For GA, hold one project per pilot org out of the tool for a quarter as a within-org control. Not a clean RCT, but better than self-reports alone.
+
+### Guardrail metrics
+
+Hard limits. Exceeding any of these blocks the next phase, regardless of how headline metrics look.
+
+| Guardrail | Limit | Why |
+|---|---|---|
+| Revert rate (merge then unmerge within 7d) | <5% | High revert = false confidence in dup suggestions |
+| PII regex matches in model output | 0 | Privacy floor; fail-closed redaction must hold |
+| Override-violation incidents | 0 | Tool must respect human overrides absolutely |
+| P0: bad write needing manual rollback | 0 | v1 has no autonomous writes — any incident is a bug |
+| Cost per PM per month | <$15 (GA) | Margin sanity |
+
+### Anti-metrics
+
+Explicitly *not* optimized for:
+
+- **Total suggestions generated.** Volume isn't value. Fewer better suggestions, not a noisier feed.
+- **Acceptance rate alone.** Maximizing acceptance pushes us toward only-confident cases, killing recall on the hard dups PMs actually need help with.
+- **Time-on-tool.** PMs want grooming faster, not longer. Lower time-to-action is the goal.
+- **Suggestions-per-digest growth.** This number should *decline* over time as the backlog gets healthier.
+
+### Measurement cadence & ownership
+
+| Layer | Cadence | Owner | Source of truth |
+|---|---|---|---|
+| Output quality | Per-release on eval set | ML / model owner | Labeled datasets + offline harness |
+| Product behavior | Real-time dashboard, weekly review | PM on this tool | In-product telemetry |
+| Backlog outcomes | Monthly snapshot, quarterly review | PM + pilot project owner | Linear/Jira API + survey |
+| Guardrails | Continuous alerting | On-call | Telemetry + log scan |
 
 ## Failure modes & mitigations
 
