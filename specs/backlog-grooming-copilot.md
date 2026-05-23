@@ -1,6 +1,7 @@
 # Backlog grooming copilot — Spec
 
 - **Horizon:** Next
+- **Stage:** 3 — Execution
 - **Theme:** backlog-delivery
 - **Owner:** TBD
 - **Status:** Draft
@@ -16,8 +17,11 @@ Unlike PRD drafting (kickoff-bound), story writing (refinement-bound), or releas
 **In our definition:**
 - De-duplication (detect, suggest merges, prevent new dups at file time)
 - Stale-item pruning (surface what's gone cold and likely dead)
-- Priority drift detection (flag rank that no longer matches linked goals or customer signal)
+- Priority drift detection (flag rank that no longer matches the parent epic's PRD weight or customer signal)
 - Pre-meeting synthesis (turn the raw backlog into a focused shortlist for the actual grooming session)
+- Spine-compliance surfacing (flag orphan tickets that should be linked to an active epic + PRD)
+
+**The tool is spine-first.** Per the roadmap's lifecycle principle, the unit of work is the **active Jira epic + linked Confluence PRD** wherever one exists. Project-level scanning is the *fallback* for orphan tickets, not the default. See [Spine scoping policy](#spine-scoping-policy) below for the tiered behavior.
 
 **Adjacent activities others sometimes call grooming, handled by other roadmap tools:**
 - Refinement to "Ready" — acceptance criteria, story format, sizing → *Story & ticket writer* (Now)
@@ -34,21 +38,35 @@ Backlogs decay. Duplicates accumulate as different stakeholders file the same co
 
 ## Users & jobs-to-be-done
 
-**Primary:** PMs/POs owning a Linear or Jira project with >100 active tickets.
+**Primary:** PMs/POs owning a Linear or Jira project with >100 active tickets, typically across 2–8 active epics.
 **Secondary:** Eng leads who want to walk into grooming with a pre-cleaned list.
 
-1. *Before grooming*, tell me what's redundant, stale, or mis-prioritized so I review judgments, not raw lists.
-2. *When I file a new ticket*, warn me if it's a likely duplicate before it hits the backlog.
-3. *Show me* which open items no longer link to any active goal or customer signal.
+1. *Before grooming*, tell me what's redundant, stale, or mis-prioritized **within each active epic**, so I review judgments, not raw lists.
+2. *When I file a new ticket*, warn me if it's a likely duplicate before it hits the backlog — prefer matches within the same epic.
+3. *Show me* which open items no longer link to any active epic or customer signal, and propose where they should attach.
+
+## Spine scoping policy
+
+Tickets fall into one of three tiers; the tool's behavior degrades gracefully across them.
+
+| Tier | Spine state | Tool behavior |
+|---|---|---|
+| **Full spine** | Linked parent epic + linked Confluence PRD, PRD active | Full grooming, epic-scoped. Priority drift uses PRD-derived weight. Dup detection scoped to the epic's open tickets. |
+| **Partial spine** | Parent epic present, no linked PRD (or PRD archived) | Dup detection epic-scoped. Drift falls back to goal/OKR links. Surfaces a "PRD missing — should this epic be retired?" prompt to the PM. |
+| **Orphan** | No parent epic | Project-level fallback (the original scan). Surfaced in the digest's *orphans* section with a "should this attach to epic X?" suggestion. |
+
+Grooming legacy backlogs is itself a grooming activity. Bringing orphans into spine compliance is a first-class output of the tool — not a precondition for using it.
 
 ## In scope (v1)
 
-- Duplicate detection across open tickets in the same project (semantic, not just title match), with merge suggestions.
-- Stale detection: open items with no comment/update in N days AND no linked active goal.
-- Priority drift: items whose stated priority disagrees with linked OKR/goal weight or customer-signal volume.
-- Re-rank suggestions: ranked list of "items to look at" before each grooming session, ordered by confidence × impact.
-- Pre-grooming digest synthesized into a markdown report the PM reviews before the meeting.
-- File-time duplicate warning at ticket creation, surfaced in the Linear/Jira plugin.
+- **Spine resolution** — for every ticket, identify the parent epic and linked PRD (if any) and classify into the tier table above. This is the first operation; all others are scoped by it.
+- Duplicate detection — semantic match scoped to the parent epic's open tickets for full/partial-spine tickets; falls back to project-scope for orphans. Cross-epic matches surfaced separately with lower confidence.
+- Stale detection — open items with no comment/update in N days **and** whose parent epic is archived or absent. Hard floor: never flag <30d old or in-progress.
+- Priority drift — items whose stated priority disagrees with the parent epic's PRD-derived weight × customer-signal volume. Goal/OKR weight is the fallback for partial-spine and orphans.
+- Orphan surfacing — open tickets without a parent epic, with a proposed epic attachment (highest-similarity active epic) for the PM to confirm.
+- Re-rank suggestions — ranked list of "items to look at" before each grooming session, ordered by confidence × impact, **grouped by epic**.
+- Pre-grooming digest — markdown report **scoped per active epic**, with an *orphans* section as the project-level remainder.
+- File-time duplicate warning at ticket creation — prefers same-epic matches when the new ticket is being filed under an epic.
 
 ## Out of scope (v1)
 
@@ -59,18 +77,25 @@ Backlogs decay. Duplicates accumulate as different stakeholders file the same co
 
 ## Capabilities
 
-| Capability | Output | Trust gate |
-|---|---|---|
-| Duplicate suggestion | Pairs of tickets with similarity score + 1-line rationale + cited lines | PM clicks merge / dismiss |
-| Stale flag | Items with last-activity date and reason for staleness | PM clicks keep / close / snooze |
-| Priority drift | Item + current priority + suggested priority + reason | PM accepts / edits / rejects |
-| Pre-grooming digest | Markdown summary delivered day-before grooming | PM edits before sharing |
-| File-time dup warning | Inline panel in ticket create flow | PM proceeds / merges into existing |
+| Capability | Scope | Output | Trust gate |
+|---|---|---|---|
+| Spine resolution | All tickets | Tier classification (full / partial / orphan) + resolved epic + PRD references | None — internal to other operations |
+| Duplicate suggestion | Epic-scoped (orphans: project) | Ticket pairs with similarity score + rationale + cited lines + scope label | PM clicks merge / dismiss |
+| Stale flag | Epic-scoped (status drives signal) | Items with last-activity date + reason (incl. "parent epic archived") | PM clicks keep / close / snooze |
+| Priority drift | Epic-scoped (PRD weight) → goal-scoped fallback | Item + current priority + suggested priority + driving signal | PM accepts / edits / rejects |
+| Orphan surfacing | Project-wide | Orphan ticket + proposed parent epic + similarity rationale | PM accepts attachment / dismisses |
+| Pre-grooming digest | Per-epic + orphans remainder | Markdown summary grouped by epic, delivered day-before grooming | PM edits before sharing |
+| File-time dup warning | Epic-scoped (if creating under an epic) | Inline panel in ticket create flow | PM proceeds / merges into existing |
 
 ## Integrations
 
-- **Linear** (primary) and **Jira** (parity by v1.1) — read tickets, comments, links, labels, priority, hierarchy.
-- **Linked goals / OKRs** — read-only from whatever the team uses (Linear projects, Jira Advanced Roadmaps, Notion table). Configurable.
+- **The spine** (primary navigation): Confluence PRD + Jira epic. The tool resolves spine for every ticket via:
+  1. The ticket's parent epic field (Linear parent / Jira epic-link).
+  2. The epic's linked Confluence page — the PRD.
+  3. The PRD's active/archived state and its priority/weight signal.
+- **Linear** (primary store) and **Jira** (parity by v1.1) — read tickets, comments, links, labels, priority, hierarchy.
+- **Confluence** — read-only on linked PRD pages: status, priority signal, in-scope list. Used to compute expected-priority for drift detection.
+- **Linked goals / OKRs** — read-only fallback for partial-spine and orphan tickets only. When the epic-level PRD signal is available, that takes precedence.
 - **Customer signal** — Zendesk / Intercom / Productboard *linkages already present on tickets*. Do not crawl raw conversations.
 - **Slack** — output only (digest delivery). No Slack ingest in v1.
 
@@ -84,12 +109,13 @@ No standalone app surface (per operating principle 5).
 
 ## Trust & safety
 
-- Every suggestion ships with at least one cited source (linked ticket IDs, goal IDs, signal source).
-- Confidence score visible on every suggestion; PM can set a project-wide threshold below which suggestions are hidden.
-- Dismissals are sticky and feed back into per-project tuning.
+- Every suggestion ships with at least one cited source (linked ticket IDs, epic ID, PRD section, goal IDs, signal source). Spine references are surfaced explicitly so the PM can see *why* the tool grouped tickets the way it did.
+- Confidence score visible on every suggestion; PM can set per-epic and per-project thresholds. Cross-epic dup matches require a higher confidence bar than within-epic.
+- Dismissals are sticky and feed back into per-epic tuning (with per-project fallback for orphans).
 - Audit log of every accepted action, queryable by PM.
 - PII scrubbing on ticket bodies before any model call (operating principle 4).
-- No writes without PM confirmation in v1. v2 may consider "auto-merge on >0.95 confidence" gated by per-project opt-in.
+- No writes without PM confirmation in v1. v2 may consider "auto-merge on >0.95 confidence" gated by per-epic opt-in.
+- Spine resolution is non-blocking. If the parent epic or PRD can't be resolved, the ticket degrades to the appropriate tier (partial / orphan) and is still groomed — never silently dropped.
 
 ## Success metrics
 
@@ -109,31 +135,56 @@ No standalone app surface (per operating principle 5).
 
 ## Dependencies & open questions
 
-- **Depends on** the *Story & ticket writer* (Now). Grooming signal is only as good as the structure of the tickets it reads; if the writer ships first, grooming becomes meaningfully easier.
+- **Depends on** the *PRD drafting assistant* (Now). Spine-aware grooming is only as good as the spine itself — if PRDs don't exist or aren't structured with the in-scope list / priority signal, the tool degrades to the partial-spine tier for everything and we lose most of the lift over the original project-scan design.
+- **Depends on** the *Story & ticket writer* (Now). Grooming signal is only as good as the structure of the tickets it reads, and the story writer is what makes tickets spine-linked on creation.
 - **Open:** Does customer-signal weighting need per-team config, or can we infer it from existing linkage patterns?
-- **Open:** Cold start — the first month with no dismissal feedback may be too noisy. Ship with a hand-tuned per-project-type threshold?
+- **Open:** Cold start on legacy backlogs — what fraction of tickets do we expect to land in the orphan tier? If >50%, the project-scan fallback gets exercised more than the epic-scoped path and we should invest there equally.
+- **Open:** Orphan-attachment confidence threshold — we don't want to suggest attaching every old ticket to an epic it only weakly relates to. Where's the bar?
 - **Open:** Data residency on customer-signal text — re-confirm with privacy review before reading Zendesk fields.
 - **Risk:** Eng leads may read this as "PM offloading their job onto eng review." Frame the digest as PM-owned output, not eng-facing.
+- **Risk:** Spine assumption may not hold for teams that don't use Confluence + Jira epics (e.g., Linear-only shops with project-as-PRD). v1 ships Confluence-first; we'll need a Linear-native spine adapter for full coverage.
 
 ## Detection mechanics
 
+### Spine resolution (runs first)
+For each open ticket:
+1. Look up the parent epic field. If missing → orphan tier.
+2. If epic present, look up its Confluence-linked PRD. If missing or archived → partial-spine tier.
+3. If PRD present and active → full-spine tier. Cache the PRD's priority signal and in-scope list.
+
+Spine resolution runs at the start of every scan and is the lookup other operations rely on. It's intentionally cheap — no LLM calls — and is the single failure point where the policy in [Spine scoping policy](#spine-scoping-policy) takes effect.
+
 ### Duplicate detection
-- Embed title + body + label set with a sentence-embedding model; cosine similarity over the project's open ticket set.
+- Embed title + body + label set with a sentence-embedding model.
+- **Scope:** cosine similarity over the *parent epic's* open ticket set for full/partial-spine tickets; project-wide set for orphans.
+- **Cross-epic candidates** (high similarity, different parent epics) are surfaced separately at a higher confidence bar (≥0.85) — these usually indicate a missed epic split or a misfiled ticket.
 - Top-K candidates pass a re-rank step comparing requester overlap, label overlap, linked-customer overlap, and a short LLM rationale ("is B a duplicate of A?") returning a confidence scalar.
 - Final score = 0.6 × embedding similarity + 0.25 × overlap features + 0.15 × LLM confidence.
-- Surface suggestions ≥0.7; auto-hide <0.5 (configurable per project).
+- Surface within-epic suggestions ≥0.7; cross-epic ≥0.85; auto-hide <0.5 (configurable per epic).
 
 ### Staleness scoring
-`score = w1·days_since_last_comment + w2·no_active_goal + w3·no_recent_customer_signal + w4·priority_decay`
+`score = w1·days_since_last_comment + w2·parent_epic_archived_or_absent + w3·no_recent_customer_signal + w4·priority_decay`
 
-- Weights tuned per-project from accept/dismiss feedback.
+- The `parent_epic_archived_or_absent` term replaces the prior `no_active_goal` — epic state is the primary freshness signal under the spine model. Goal links remain a tertiary input for orphans.
+- Weights tuned per-epic from accept/dismiss feedback (per-project fallback for orphans).
 - Hard floors: never flag items <30 days old or with an in-progress assignee.
 
 ### Priority drift
 For each open ticket with priority P:
-1. Compute *expected* priority from `linked_goal_weight × customer_signal_volume × age_decay`.
-2. If `|P − expected| ≥ 1` priority band, emit a drift suggestion with the gap and contributing reasons.
-3. Ignore items the PM has manually re-prioritized in the last 14 days — respect the human override.
+1. Determine the priority anchor by tier:
+   - **Full spine:** anchor = parent epic's PRD-derived weight.
+   - **Partial spine:** anchor = parent epic's labels/priority (no PRD signal available).
+   - **Orphan:** anchor = `linked_goal_weight` (legacy behavior).
+2. Compute *expected* priority from `anchor × customer_signal_volume × age_decay`.
+3. If `|P − expected| ≥ 1` priority band, emit a drift suggestion with the gap, the anchor source, and contributing reasons.
+4. Ignore items the PM has manually re-prioritized in the last 14 days — respect the human override.
+
+### Orphan attachment
+For each orphan ticket:
+1. Embed title + body + labels.
+2. Compute cosine similarity against the embedding of each active epic's PRD + epic description.
+3. If top match ≥0.65 (TBD — see open question), surface as an attachment suggestion with the candidate epic + rationale.
+4. If no match ≥0.65, the orphan stays orphaned but is still surfaced in the digest's orphans section.
 
 ## Evaluation criteria & metrics
 
@@ -239,12 +290,15 @@ Explicitly *not* optimized for:
 
 | Failure | What it looks like | Mitigation |
 |---|---|---|
-| False-positive duplicate | Two distinct customer requests merged | Per-project confidence threshold; PM-only merge; "report bad suggestion" feeds eval set |
-| Stale flag on active work | Item flagged because conversation lives in Slack, not the ticket | Stale check requires no-comment AND no-linked-goal; PM can mark "active off-ticket" |
+| False-positive duplicate | Two distinct customer requests merged | Per-epic confidence threshold; PM-only merge; "report bad suggestion" feeds eval set |
+| Stale flag on active work | Item flagged because conversation lives in Slack, not the ticket | Stale check requires no-comment AND epic-archived/absent; PM can mark "active off-ticket" |
 | Drift contradicts PM judgment | Tool keeps re-surfacing a deliberate deprioritization | 14-day human-override cooldown on drift suggestions |
 | Cascading bad digest | First digest is noisy, PM disengages | Alpha is read-only with explicit PM rating before plugin ships |
 | PII leakage | Customer name/email reaches the model | Pre-call redaction with a tested allowlist; fail closed on regex match in output |
 | Eng frustration | Eng reads digest as a complaint list | Frame as PM-to-PM; eng-facing summary deferred to v2 |
+| Wrong-spine resolution | Ticket assigned to the wrong parent epic by orphan attachment | Attachment suggestions are *proposals* the PM accepts/dismisses, never auto-applied; confidence ≥0.65 floor; per-ticket dismissal feedback |
+| Cross-epic dup miss | Two genuinely duplicate tickets filed under different epics, scoped scan can't see across | Cross-epic candidates run as a separate pass at the higher confidence bar; weekly project-wide audit catches what epic-scoping hides |
+| Stale-PRD anchoring | Drift suggestions derived from a PRD that's been quietly archived | Spine resolution refreshes PRD status on every scan; archived PRDs degrade the ticket to partial-spine immediately |
 
 ## Cost & latency envelope (rough)
 
@@ -260,11 +314,16 @@ Sizing target: project with ~500 open tickets, weekly full re-scan.
 
 ### Flow A — Wednesday pre-grooming digest
 
-Tuesday 5pm UTC the scheduler runs the project scan. Wednesday 8am local the PM gets a Slack DM:
+Tuesday 5pm UTC the scheduler runs the scan, resolves the spine for every ticket, and groups by active epic. Wednesday 8am local the PM gets a Slack DM:
 
-> *Backlog digest for Mobile-iOS — 6 dup candidates, 12 stale items, 4 priority drifts. [Open review →]*
+> *Backlog digest for Mobile-iOS — 3 active epics scanned.*
+> • *Login-Refresh* (PRD active): 4 dup candidates, 6 stale, 2 drifts.
+> • *Push-Notifications-v2* (PRD active): 1 dup, 3 stale, 1 drift.
+> • *Tablet-UX* (PRD archived 11d ago): 1 dup, 3 stale — *consider retiring this epic.*
+> • *Orphans:* 7 tickets with no parent epic; 4 have a proposed attachment.
+> *[Open review →]*
 
-PM clicks through to the bulk review view, batch-dismisses 3 dup candidates with a one-click "not duplicates because…", merges 2, snoozes 8 stale items, accepts 1 drift. Total time: ~7 minutes. Grooming meeting starts with a 30-item shortlist instead of a 312-item backlog.
+PM clicks through. The bulk review view is grouped by epic. PM works the Login-Refresh epic first (the active sprint), accepts 1 dup merge and 1 drift, snoozes the rest. Then sweeps orphans: accepts 3 proposed attachments, closes 2 truly dead tickets. Total time: ~9 minutes. Grooming meeting starts with a per-epic shortlist instead of a 312-item project view, and the Tablet-UX epic gets flagged for an explicit "retire this?" conversation.
 
 ### Flow B — File-time dup warning
 
@@ -286,4 +345,7 @@ Explicit non-features, to prevent scope drift:
 - **Won't post to customers.** Nothing this tool produces is customer-facing.
 - **Won't make priority calls autonomously.** Drift suggestions are inputs to PM judgment, never replacements.
 - **Won't cross project boundaries in v1.** Cross-project dedup is a harder problem with a different trust bar.
+- **Won't cross epic boundaries silently.** Cross-epic dup matches surface at a higher confidence bar and are flagged as scope crossings, not blended in with within-epic suggestions.
+- **Won't auto-attach orphans to epics.** Attachment is a *proposal* the PM confirms. Mis-attachment is more expensive than a missed attachment.
+- **Won't refuse to operate without a spine.** Orphan-tier grooming is still grooming. Refusing legacy backlogs because they predate the spine principle would gut the tool's adoption.
 - **Won't surface anything without a citation.** If we can't show the PM why, we don't show the suggestion.
