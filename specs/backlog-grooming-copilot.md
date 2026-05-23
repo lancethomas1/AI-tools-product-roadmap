@@ -95,3 +95,86 @@ No standalone app surface (per operating principle 5).
 - **Open:** Cold start — the first month with no dismissal feedback may be too noisy. Ship with a hand-tuned per-project-type threshold?
 - **Open:** Data residency on customer-signal text — re-confirm with privacy review before reading Zendesk fields.
 - **Risk:** Eng leads may read this as "PM offloading their job onto eng review." Frame the digest as PM-owned output, not eng-facing.
+
+## Detection mechanics
+
+### Duplicate detection
+- Embed title + body + label set with a sentence-embedding model; cosine similarity over the project's open ticket set.
+- Top-K candidates pass a re-rank step comparing requester overlap, label overlap, linked-customer overlap, and a short LLM rationale ("is B a duplicate of A?") returning a confidence scalar.
+- Final score = 0.6 × embedding similarity + 0.25 × overlap features + 0.15 × LLM confidence.
+- Surface suggestions ≥0.7; auto-hide <0.5 (configurable per project).
+
+### Staleness scoring
+`score = w1·days_since_last_comment + w2·no_active_goal + w3·no_recent_customer_signal + w4·priority_decay`
+
+- Weights tuned per-project from accept/dismiss feedback.
+- Hard floors: never flag items <30 days old or with an in-progress assignee.
+
+### Priority drift
+For each open ticket with priority P:
+1. Compute *expected* priority from `linked_goal_weight × customer_signal_volume × age_decay`.
+2. If `|P − expected| ≥ 1` priority band, emit a drift suggestion with the gap and contributing reasons.
+3. Ignore items the PM has manually re-prioritized in the last 14 days — respect the human override.
+
+## Evaluation plan
+
+| Phase | Method | Pass bar |
+|---|---|---|
+| Alpha | Hand-label 200 ticket pairs per project as dup/not-dup; measure precision/recall | Precision >0.8 at recall >0.5 |
+| Alpha | PM rates each digest item: useful / noisy / wrong | ≥60% useful |
+| Beta | Track suggestion acceptance vs. dismissal in-product | Acceptance >40%, dismiss-no-review <15% |
+| Beta | Shadow-mode on 3 projects without surfacing; compare to PM-curated grooming one week later | ≥70% overlap on items PM also flagged |
+| GA | Continuous: weekly cohort of accepted-then-reverted suggestions | <5% revert rate |
+
+## Failure modes & mitigations
+
+| Failure | What it looks like | Mitigation |
+|---|---|---|
+| False-positive duplicate | Two distinct customer requests merged | Per-project confidence threshold; PM-only merge; "report bad suggestion" feeds eval set |
+| Stale flag on active work | Item flagged because conversation lives in Slack, not the ticket | Stale check requires no-comment AND no-linked-goal; PM can mark "active off-ticket" |
+| Drift contradicts PM judgment | Tool keeps re-surfacing a deliberate deprioritization | 14-day human-override cooldown on drift suggestions |
+| Cascading bad digest | First digest is noisy, PM disengages | Alpha is read-only with explicit PM rating before plugin ships |
+| PII leakage | Customer name/email reaches the model | Pre-call redaction with a tested allowlist; fail closed on regex match in output |
+| Eng frustration | Eng reads digest as a complaint list | Frame as PM-to-PM; eng-facing summary deferred to v2 |
+
+## Cost & latency envelope (rough)
+
+Sizing target: project with ~500 open tickets, weekly full re-scan.
+
+- **Embeddings:** ~500 vectors, incrementally refreshed → negligible after warm.
+- **Re-rank LLM calls:** top-30 candidate pairs × 3 dimensions = ~90 short prompts. ~$0.05–$0.15 per scan.
+- **Drift scoring:** deterministic, no model calls.
+- **File-time dup warning:** 1 embedding + ≤5 re-rank prompts per ticket create. p95 latency target <800ms.
+- **Per-PM monthly cost ceiling:** <$5 (alpha), <$15 (GA with file-time warnings live).
+
+## User-flow walkthroughs
+
+### Flow A — Wednesday pre-grooming digest
+
+Tuesday 5pm UTC the scheduler runs the project scan. Wednesday 8am local the PM gets a Slack DM:
+
+> *Backlog digest for Mobile-iOS — 6 dup candidates, 12 stale items, 4 priority drifts. [Open review →]*
+
+PM clicks through to the bulk review view, batch-dismisses 3 dup candidates with a one-click "not duplicates because…", merges 2, snoozes 8 stale items, accepts 1 drift. Total time: ~7 minutes. Grooming meeting starts with a 30-item shortlist instead of a 312-item backlog.
+
+### Flow B — File-time dup warning
+
+A CS rep files *"Login broken on iPad Pro after 17.4 update"*. As they save, the sidebar shows:
+
+> *Possible duplicate (87%): MOB-2841 "iPad Pro login fails post-iOS-17.4". Filed 3 days ago, 4 customer reports linked.*
+
+CS rep clicks "Add my customer to MOB-2841" instead. The duplicate never enters the backlog.
+
+### Flow C — Drift suggestion the PM rejects
+
+Tool suggests promoting MOB-3120 from P3 → P2 because three new Zendesk tickets link to it. The PM knows the team is mid-sprint on a higher-impact item and dismisses with "tracking, will revisit next planning." The 14-day cooldown engages; MOB-3120 doesn't re-surface until cooldown elapses.
+
+## Anti-goals
+
+Explicit non-features, to prevent scope drift:
+
+- **Won't write tickets for the PM.** That's the Story & ticket writer's job. Grooming reads, judges, proposes — it doesn't author.
+- **Won't post to customers.** Nothing this tool produces is customer-facing.
+- **Won't make priority calls autonomously.** Drift suggestions are inputs to PM judgment, never replacements.
+- **Won't cross project boundaries in v1.** Cross-project dedup is a harder problem with a different trust bar.
+- **Won't surface anything without a citation.** If we can't show the PM why, we don't show the suggestion.
