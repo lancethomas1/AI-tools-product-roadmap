@@ -6,12 +6,13 @@ How we govern AI tools and other product-owned software in this org. These docum
 
 The roadmap lists tools we are building. These documents define how they get built, shipped, and owned — and where engineering's role begins and ends. Without that, every new PM-built tool relitigates the same questions about repos, approvals, security, and incident response. We settle those once, in writing, and move on.
 
-## The four documents
+## The documents
 
 1. **[Ownership model](./ownership-model.md)** — Who owns the gate for a given tool, and why. The decision turns on who owns the end user, not on who can write the code.
 2. **[Engineering guardrails](./engineering-guardrails.md)** — The platform standards, security baselines, deployment surface, and observability requirements that every product-owned tool inherits. The rails inside which product self-serves.
 3. **[Approval model](./approval-model.md)** — How changes flow on product-owned repos. What product approves on its own, what triggers engineering review, what escalates to change control.
 4. **[Security & data envelope](./security-data-envelope.md)** — The non-negotiable rules on data access, secrets, prod boundaries, AI model use, and incident response. These apply regardless of ownership.
+5. **[Agent library](./agent-library.md)** — The reusable agents that compose into the roadmap tools. Defines each agent's contract (inputs, outputs, trust gates, failure modes, evaluation) so tools share infrastructure instead of forking it.
 
 ## How they relate
 
