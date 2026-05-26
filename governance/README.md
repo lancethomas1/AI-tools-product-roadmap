@@ -13,6 +13,7 @@ The roadmap lists tools we are building. These documents define how they get bui
 3. **[Approval model](./approval-model.md)** — How changes flow on product-owned repos. What product approves on its own, what triggers engineering review, what escalates to change control.
 4. **[Security & data envelope](./security-data-envelope.md)** — The non-negotiable rules on data access, secrets, prod boundaries, AI model use, and incident response. These apply regardless of ownership.
 5. **[Agent library](./agent-library.md)** — The reusable agents that compose into the roadmap tools. Defines each agent's contract (inputs, outputs, trust gates, failure modes, evaluation) so tools share infrastructure instead of forking it.
+6. **[GitHub org structure](./github-org-structure.md)** — Where product-owned repos live in GitHub and how that maps to engineering's existing orgs. The ownership model made visible at the repository URL.
 
 ## How they relate
 
@@ -20,6 +21,7 @@ The roadmap lists tools we are building. These documents define how they get bui
 - **Guardrails** define what they inherit by default.
 - **Approval** defines how changes move.
 - **Envelope** defines what no change is allowed to violate.
+- **Org structure** makes ownership legible at the repo level.
 
 Ownership is the variable. Guardrails, approval rules, and the security envelope are constants set by engineering and security; product operates inside them.
 
