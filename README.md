@@ -24,8 +24,8 @@ Tools are stations on a five-stage pipeline (Drafting → Planning → Execution
 | Directory | What lives here |
 |---|---|
 | [`ROADMAP.md`](./ROADMAP.md) | Narrative source of truth: horizons, lifecycle map, spine principle, success metrics. |
-| [`governance/`](./governance/README.md) | How tools get built, shipped, and owned. Ownership model, approval tiers, engineering guardrails, security envelope, reusable agent library, GitHub org structure. |
-| [`specs/`](./specs/) | Per-tool specs that turn a roadmap entry into a buildable design. Currently: [story-ticket-writer](./specs/story-ticket-writer.md), [backlog-grooming-copilot](./specs/backlog-grooming-copilot.md). |
+| [`governance/`](./governance/README.md) | How tools get built, shipped, and owned. Ownership model, approval tiers, engineering guardrails, security envelope, agent library, GitHub org structure, and the [contributor model](./governance/contributor-model.md) (User / Champion / Contributor / Tool Owner ladder). |
+| [`specs/`](./specs/) | One spec per roadmap tool — turns a roadmap entry into a buildable design with capabilities, integrations, trust & safety, success metrics, and rollout phasing. |
 | [`strategy/`](./strategy/README.md) | Working positions on bets and constraints that reshape the roadmap. Promote to `governance/` when settled. |
 | [`personas/`](./personas/README.md) | PM archetypes the tools serve, stakeholder audiences they write for, agent voices, and evaluation personas. Every spec cites these. |
 | [`comms/`](./comms/README.md) | Drafts and sent versions of POV messages to stakeholders. |
