@@ -7,6 +7,7 @@ A strategy doc differs from a roadmap entry because it answers "given this const
 ## Current documents
 
 1. **[Licensed seats](./licensed-seats.md)** — How the roadmap, distribution model, and governance change when Claude Code seats are scarce and have to be allocated deliberately.
+2. **[Engineering-optional delivery](./engineering-optional.md)** — How the roadmap and governance change when engineering's platform investment is treated as an enhancement tier rather than a precondition. Defines a Tier A baseline that ships on substrate product already has, and a Tier B menu engineering can fund when ready.
 
 ## How strategy docs get added
 

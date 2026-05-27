@@ -11,3 +11,4 @@ Drafts and sent versions of point-of-view messages, governance proposals, and st
 ## Index
 
 - [2026-05-24 — Product-owned tooling governance (to Heather)](./2026-05-24-product-owned-tooling-heather.md)
+- [2026-05-27 — Engineering's resourcing gap (to product leadership, private)](./2026-05-27-engineering-resourcing-product-leadership.md)
