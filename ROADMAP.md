@@ -2,6 +2,8 @@
 
 Internal roadmap for AI tools that make non-technical Product Owners and Product Managers more efficient. Scope is intentionally narrow: **Writing & Docs** and **Backlog & Delivery**. Discovery, research, and strategy tools are out of scope for this horizon.
 
+The PO/PM archetypes these tools serve, the stakeholder audiences they write for, the voices the agents speak in, and the evaluation personas the eval suites run against are defined in [`personas/`](./personas/README.md). Every spec cites the relevant personas; this roadmap doesn't restate them.
+
 ## Goals
 
 - **Cut time-to-first-draft** for the writing artifacts PMs produce every week (PRDs, release notes, status updates, stakeholder comms).
