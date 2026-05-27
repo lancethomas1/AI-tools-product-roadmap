@@ -217,6 +217,30 @@ Three layers, same framework as the grooming copilot.
 
 ## User-flow walkthroughs
 
+### Persona flow
+
+```mermaid
+sequenceDiagram
+    actor PM
+    participant Tool as Story & Ticket Writer
+    participant Spine as Confluence PRD / Jira Epic
+    participant Tracker as Linear / Jira
+    actor Eng as Eng Lead
+
+    PM->>Tool: PRD section URL or bullet list
+    Tool->>Spine: Resolve spine
+    Tool->>Tool: Generate stories + AC + size + DoR score
+    Tool-->>PM: Draft stories with citations
+    alt DoR fails
+        Tool-->>PM: Surface missing AC / gaps
+        PM->>PM: Address gap or split story
+    end
+    PM->>Tool: Review, edit, commit selected
+    Tool->>Tracker: Create tickets under epic with spine links
+    Tracker-->>Eng: Tickets enter refinement queue
+    Eng->>Tracker: Final size + AC confirmation
+```
+
 ### Flow A — PRD section → tickets
 
 PM finishes the "Authentication" section of a PRD. Clicks *Generate stories from this section* in Confluence. Plugin opens with 7 draft stories: AC, sizes, parent epic auto-linked. PM reviews — commits 5 as-is, merges 2 trivial ones into a single P3, edits one AC where the model misread a constraint. Total time: ~6 minutes for 5 committed tickets, vs. the usual ~30.
