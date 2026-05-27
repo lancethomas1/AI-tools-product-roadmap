@@ -72,28 +72,28 @@ Tier A items are plannable today. Tier B items are explicitly deferred pending t
 
 Build/adopt this quarter. Highest value-to-effort, unlocks daily-use habits.
 
-- **PRD drafting assistant** *(Stage 1 — Drafting · Tier A)* — Generate a first-draft PRD from a one-paragraph brief using the team's template. Suggests problem framing, success metrics, and open questions to resolve. Output structured for downstream consumption.
+- **PRD drafting assistant** *(Stage 1 — Drafting · Tier A)* — Generate a first-draft PRD from a one-paragraph brief using the team's template. Suggests problem framing, success metrics, and open questions to resolve. Output structured for downstream consumption. ([spec](specs/prd-drafting-assistant.md))
 - **Story & ticket writer** *(Stage 2 — Planning · Tier A)* — Convert PM bullet points or a PRD section into properly formatted user stories with acceptance criteria, sized for the team's Definition of Ready. Reads from the spine PRD. ([spec](specs/story-ticket-writer.md))
-- **Release notes generator** *(Stage 4 — Release · Tier A)* — Synthesize merged PRs and shipped tickets under a Jira epic into customer-facing release notes, internal changelog, and a Slack announcement variant.
-- **Weekly status synthesizer** *(Stage 3 — Execution · Tier A)* — Pull from Linear/Jira, GitHub, and Slack threads tied to active epics to draft the PM's weekly team and exec updates. PM edits, then sends.
+- **Release notes generator** *(Stage 4 — Release · Tier A)* — Synthesize merged PRs and shipped tickets under a Jira epic into customer-facing release notes, internal changelog, and a Slack announcement variant. ([spec](specs/release-notes-generator.md))
+- **Weekly status synthesizer** *(Stage 3 — Execution · Tier A)* — Pull from Linear/Jira, GitHub, and Slack threads tied to active epics to draft the PM's weekly team and exec updates. PM edits, then sends. ([spec](specs/weekly-status-synthesizer.md))
 
 ## Next
 
 Plan for 1–2 quarters out. Higher value but requires more integration and trust-building.
 
 - **Backlog grooming copilot** *(Stage 3 — Execution · Tier A)* — Flags duplicates, suggests merges, surfaces stale items, and proposes priority changes based on linked goals or customer signal. ([spec](specs/backlog-grooming-copilot.md))
-- **Stakeholder comms tailoring** *(Stage 4 — Release · Tier A)* — Turn one PM-written update into audience-tuned variants (exec, sales, eng, CS) with appropriate framing and detail level.
-- **Spec → sprint decomposer** *(Stage 2 — Planning · Tier A)* — Take a PRD and propose a sprint-ready ticket breakdown with estimates, dependencies, and a draft milestone plan for engineering review.
-- **Meeting → artifact pipeline** *(Stage 3 — Execution · Tier A)* — Turn sync notes into action items, ticket drafts, or PRD updates with attribution back to who said what.
+- **Stakeholder comms tailoring** *(Stage 4 — Release · Tier A)* — Turn one PM-written update into audience-tuned variants (exec, sales, eng, CS) with appropriate framing and detail level. ([spec](specs/stakeholder-comms-tailoring.md))
+- **Spec → sprint decomposer** *(Stage 2 — Planning · Tier A)* — Take a PRD and propose a sprint-ready ticket breakdown with estimates, dependencies, and a draft milestone plan for engineering review. ([spec](specs/spec-sprint-decomposer.md))
+- **Meeting → artifact pipeline** *(Stage 3 — Execution · Tier A)* — Turn sync notes into action items, ticket drafts, or PRD updates with attribution back to who said what. ([spec](specs/meeting-artifact-pipeline.md))
 
 ## Later
 
 Exploratory. Bigger bets, ambient ROI, dependent on earlier tools building trust and data.
 
-- **PM knowledge agent** *(Stage 5 — Post-release · Tier B)* — RAG over all PRDs, decision logs, retros, and Slack to answer "why did we decide X?" or "what did we try last time?" with citations. *Deferred pending Tier B investment: a persistent index store and an SSO'd surface for non-licensed PMs.*
-- **Living spec sync** *(Stage 5 — Post-release · Tier A)* — Keep PRDs and ticket descriptions in sync as either changes; flag drift between intent and implementation. Covers the in-flight PRD-update gap.
-- **Cross-functional launch checklist agent** *(Stage 4 — Release · Tier A)* — Auto-generates ready-for-launch checklists per feature, tracks cross-functional dependencies (legal, marketing, support), nags owners.
-- **Proactive sprint agent** *(Stage 3 — Execution · Tier A)* — Watches sprint progress and proposes interventions (re-scope, re-prioritize, flag risk to PM) before standup.
+- **PM knowledge agent** *(Stage 5 — Post-release · Tier B)* — RAG over all PRDs, decision logs, retros, and Slack to answer "why did we decide X?" or "what did we try last time?" with citations. *Deferred pending Tier B investment: a persistent index store and an SSO'd surface for non-licensed PMs.* ([spec](specs/pm-knowledge-agent.md))
+- **Living spec sync** *(Stage 5 — Post-release · Tier A)* — Keep PRDs and ticket descriptions in sync as either changes; flag drift between intent and implementation. Covers the in-flight PRD-update gap. ([spec](specs/living-spec-sync.md))
+- **Cross-functional launch checklist agent** *(Stage 4 — Release · Tier A)* — Auto-generates ready-for-launch checklists per feature, tracks cross-functional dependencies (legal, marketing, support), nags owners. ([spec](specs/cross-functional-launch-checklist.md))
+- **Proactive sprint agent** *(Stage 3 — Execution · Tier A)* — Watches sprint progress and proposes interventions (re-scope, re-prioritize, flag risk to PM) before standup. ([spec](specs/proactive-sprint-agent.md))
 
 ---
 

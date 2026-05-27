@@ -312,6 +312,30 @@ Sizing target: project with ~500 open tickets, weekly full re-scan.
 
 ## User-flow walkthroughs
 
+### Persona flow
+
+```mermaid
+sequenceDiagram
+    participant Tool as Backlog Grooming Copilot
+    participant Spine as Active Epics + PRDs
+    participant Tracker as Linear / Jira
+    actor PM
+    actor Eng as Eng Lead
+    actor CS as CS Rep
+
+    Note over Tool: Nightly scan
+    Tool->>Spine: Resolve spine per ticket (tier classification)
+    Tool->>Tracker: Read tickets + comments + signals
+    Tool-->>PM: Pre-grooming digest (per-epic + orphans)
+    PM->>Tracker: Accept / dismiss / merge / re-prioritize suggestions
+    PM->>Eng: Run grooming meeting with cleaned shortlist
+    Eng->>PM: Refine judgment calls
+    Note over CS,Tool: File-time
+    CS->>Tracker: Start filing new ticket
+    Tool-->>CS: Inline dup warning (epic-scoped)
+    CS->>Tracker: Attach to existing ticket instead
+```
+
 ### Flow A — Wednesday pre-grooming digest
 
 Tuesday 5pm UTC the scheduler runs the scan, resolves the spine for every ticket, and groups by active epic. Wednesday 8am local the PM gets a Slack DM:
