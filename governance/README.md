@@ -14,6 +14,7 @@ The roadmap lists tools we are building. These documents define how they get bui
 4. **[Security & data envelope](./security-data-envelope.md)** — The non-negotiable rules on data access, secrets, prod boundaries, AI model use, and incident response. These apply regardless of ownership.
 5. **[Agent library](./agent-library.md)** — The reusable agents that compose into the roadmap tools. Defines each agent's contract (inputs, outputs, trust gates, failure modes, evaluation) so tools share infrastructure instead of forking it.
 6. **[GitHub org structure](./github-org-structure.md)** — Where product-owned repos live in GitHub and how that maps to engineering's existing orgs. The ownership model made visible at the repository URL.
+7. **[Contributor model](./contributor-model.md)** — The User / Champion / Contributor / Tool Owner ladder that connects ownership and approval. Names the rungs PMs climb on a product-owned tool and explains how the other docs read once the ladder is in front of you.
 
 ## How they relate
 
@@ -22,8 +23,9 @@ The roadmap lists tools we are building. These documents define how they get bui
 - **Approval** defines how changes move.
 - **Envelope** defines what no change is allowed to violate.
 - **Org structure** makes ownership legible at the repo level.
+- **Contributor model** names the rungs the same people climb across all of the above.
 
-Ownership is the variable. Guardrails, approval rules, and the security envelope are constants set by engineering and security; product operates inside them.
+Ownership is the variable. Guardrails, approval rules, and the security envelope are constants set by engineering and security; product operates inside them. The contributor model is how product moves up the rungs inside those constants.
 
 ## Audience
 
