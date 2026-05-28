@@ -28,7 +28,7 @@ A persona earns a file when at least two specs reference it, or when it represen
 | File | Archetype | Tenure | Team type | Primary lifecycle stages |
 |---|---|---|---|---|
 | [maya-senior-growth-pm.md](./maya-senior-growth-pm.md) | Senior Growth PM | 6–8 yrs | Growth, customer-facing | 1, 3, 4 |
-| [devon-platform-po.md](./devon-platform-po.md) | Platform PO | 4–6 yrs | Platform / infrastructure | 2, 3, 5 |
+| [jordan-rtb-po.md](./jordan-rtb-po.md) | RTB PO | 5–7 yrs | Run-The-Business / BAU | 2, 3, 5 |
 | [priya-new-pm.md](./priya-new-pm.md) | New PM | 0–2 yrs | Single feature squad | 1, 2 |
 | [sam-staff-multi-team-pm.md](./sam-staff-multi-team-pm.md) | Staff Multi-Team PM | 8+ yrs | Multiple epics / squads | 3, 4, 5 |
 
@@ -84,3 +84,4 @@ A persona earns a file when at least two specs reference it, or when it represen
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-05-27 | Lance | Initial directory. README, four user personas, stakeholder set, agent voice set, evaluation persona set. |
+| 0.2 | 2026-05-28 | Lance | Replaced the Platform PO archetype (Devon) with the RTB PO archetype (Jordan) to match the org's actual PO roles. Updated downstream citations in maya, agent-voices, and evaluation-personas. |
