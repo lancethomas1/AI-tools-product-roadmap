@@ -81,7 +81,7 @@ The tool's job is to make a **structured, citation-grounded, downstream-readable
 ## Integrations
 
 - **Confluence** (primary) — write draft pages in the team's PRD space; never publish.
-- **Linked context sources** (read-only, optional): prior PRDs in the same space, Slack thread URLs the PM pastes, Productboard / Zendesk linkages the PM provides.
+- **Linked context sources** (read-only, optional): prior PRDs in the same space, Slack thread URLs the PM pastes, Productboard / Zendesk linkages the PM provides, Figma file / frame URLs the PM pastes (frame names and embedded comments only; no rendering, no design generation).
 - **Org directory** — read-only for stakeholder name validation.
 - **No Jira write in v1.** Epic creation is a Stage-2 act; the PRD stays a doc.
 

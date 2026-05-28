@@ -82,6 +82,7 @@ The tool's job is to make a well-formed, spine-linked, DoR-passing ticket the pa
 
 - **Linear** (primary) and **Jira** (parity by v1.1) — write API, project/epic structure, label taxonomy, DoR config.
 - **Confluence PRD** — read access; every generated story cites the PRD section it derives from.
+- **Figma** (read-only) — if the PRD section or PM bullets reference Figma file / frame URLs, the tool passes those links through onto the generated tickets and uses frame names as additional context. No rendering, no design diffing, no AC generation from pixels.
 - **Team DoR config** — initially a YAML file or Linear project-description block; long term a custom field.
 - **No Slack ingest in v1.** Bullet input is text in the plugin, not parsed from threads.
 
