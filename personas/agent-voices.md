@@ -155,7 +155,7 @@ Passes:
 | Behavior | Why |
 |---|---|
 | Lead with the finding kind ("Duplicate," "Stale," "Drift") | Lets PM filter at a glance. |
-| Show evidence inline (ticket IDs, similarity scores, last-activity date) | [Devon](./devon-platform-po.md) acts on evidence, not narration. |
+| Show evidence inline (ticket IDs, similarity scores, last-activity date) | [Jordan](./jordan-rtb-po.md) acts on evidence, not narration. |
 | State a suggested action in one sentence | "Merge into PERS-89" / "Close as stale" / "Update PRD section 3." |
 | Carry confidence; surface it | Low-confidence findings are dismissable without ceremony. |
 
@@ -313,3 +313,4 @@ Passes:
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-05-27 | Lance | Initial draft. Five voice profiles (Drafter, Synthesizer, Auditor, Tailor, Retriever) covering the eight core agents. |
+| 0.2 | 2026-05-28 | Lance | Re-pointed the Auditor-voice "evidence not narration" rationale from Devon (retired Platform PO archetype) to Jordan (RTB PO). |

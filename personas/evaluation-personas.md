@@ -15,7 +15,7 @@ This file defines the persona templates and the input shapes. Concrete eval data
 | [Happy-path personas](#happy-path-personas) | Validate the tools work for realistic inputs from real-PM archetypes. | Every per-agent eval suite. |
 | [Adversarial personas](#adversarial-personas) | Validate tools fail loudly, not silently, when input is broken. | Every per-agent eval suite (hard-bar metrics). |
 
-The four [user personas](./README.md#user-personas-pos-and-pms) (Maya, Devon, Priya, Sam) supply the *human context* for happy-path inputs. The adversarial set is not tied to a specific archetype — these inputs would break any PM's workflow.
+The four [user personas](./README.md#user-personas-pos-and-pms) (Maya, Jordan, Priya, Sam) supply the *human context* for happy-path inputs. The adversarial set is not tied to a specific archetype — these inputs would break any PM's workflow.
 
 ## How specs and agents cite this file
 
@@ -87,17 +87,18 @@ template: "weekly_status"
 | Blocker softened to "navigating challenges with…" | Risk-preservation failure. |
 | Stale numbers (Tuesday's snapshot when Thursday's update exists) | Synthesizer freshness failure. |
 
-### Happy-path: Backlog grooming pass (Devon)
+### Happy-path: Backlog grooming pass (Jordan)
 
-**Profile.** A platform PO on Monday morning, 200+ open tickets, needs a ranked finding list before his 10am cross-team sync.
+**Profile.** An RTB PO on Monday morning, 300+ open tickets after a weekend incident plus eleven new CS-filed defects, needs a ranked finding list (dupes, stale, recurring-cluster candidates) before his 9am triage block.
 
 **Realistic input**
 
 ```
-scope: {project: "platform", team: "platform-core", age_window: "180d"}
-goal_refs: ["okr://2026-q2-platform-migration-stability"]
+scope: {project: "rtb", team: "rtb-area-a", age_window: "180d"}
+goal_refs: ["okr://2026-q2-defect-close-rate", "okr://2026-q2-sla-compliance"]
 staleness_threshold_days: 30
 dedup_similarity_threshold: 0.85
+cluster_min_recurrences: 3
 ```
 
 **Expected agent behavior**
@@ -353,3 +354,4 @@ A new adversarial persona is added when a production failure surfaces a class of
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-05-27 | Lance | Initial draft. Four happy-path personas (one per user archetype) and nine adversarial personas covering the most-common failure classes across the agent library. |
+| 0.2 | 2026-05-28 | Lance | Re-pointed the four-personas list and the Backlog grooming happy-path input from Devon (retired Platform PO archetype) to Jordan (RTB PO). Input profile reworked from platform-migration framing to RTB triage framing; added cluster_min_recurrences. |
