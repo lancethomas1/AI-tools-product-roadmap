@@ -29,6 +29,8 @@ The PO/PM archetypes these tools serve, the stakeholder audiences they write for
 5. **Integrate, don't aggregate.** Ship as plugins/extensions to existing tools before considering a standalone surface.
 6. **Lifecycle, not feature type.** Tools are stations on the feature delivery pipeline, not standalone products. Output from one tool is input to the next.
 
+These principles compose into the working position spelled out in [strategy/grounding-contract-destination.md](strategy/grounding-contract-destination.md): a roadmap tool is **grounded** in company data, ships under a **contract**, and ends at a **destination**. Raw chat satisfies none of the three. That document is the answer to "why not just have PMs chat?"
+
 ---
 
 ## Feature lifecycle map

@@ -8,6 +8,7 @@ A strategy doc differs from a roadmap entry because it answers "given this const
 
 1. **[Licensed seats](./licensed-seats.md)** — How the roadmap, distribution model, and governance change when Claude Code seats are scarce and have to be allocated deliberately.
 2. **[Engineering-optional delivery](./engineering-optional.md)** — How the roadmap and governance change when engineering's platform investment is treated as an enhancement tier rather than a precondition. Defines a Tier A baseline that ships on substrate product already has, and a Tier B menu engineering can fund when ready.
+3. **[Grounding, contract, destination](./grounding-contract-destination.md)** — Why the roadmap is a portfolio of integrated tools rather than "every PM gets a chat seat." The three structural properties (grounded in company data, ships under a contract, ends at a destination) that separate a roadmap tool from a chat session.
 
 ## How strategy docs get added
 
