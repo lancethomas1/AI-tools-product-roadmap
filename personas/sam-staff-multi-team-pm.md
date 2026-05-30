@@ -72,6 +72,7 @@ The pattern is **Sam is the routing layer between epics and audiences, and most 
 | **Living spec sync** (Later) | Primary | Cross-epic drift detection is more valuable to her than to single-squad PMs. |
 | **Proactive sprint agent** (Later) | Secondary | Useful, but she relies on team PMs to flag the day-to-day; she wants weekly cross-epic signal. |
 | **Backlog grooming copilot** (Next) | Secondary | Her squad PMs use it more directly; she sees the rollup. |
+| **Handoff runbook generator** (Later) | Secondary (as producer) | When a multi-team epic transfers to RTB, she (or her squad PMs) produce the runbook. For cross-team features the operational architecture and escalation sections are the hardest to assemble by hand. Jordan ([RTB PO](./jordan-rtb-po.md)) is the receiver. ([spec](../specs/handoff-runbook-generator.md)) |
 | **PRD drafting assistant** (Now) | Secondary | She drafts ~2 PRDs per quarter, usually higher-level area docs. |
 | **Story & ticket writer** (Now) | Rarely | Squad PMs own the ticket layer. |
 | **Release notes generator** (Now) | Rarely | Squad PMs author per-epic notes; she rolls them up. |
@@ -113,3 +114,4 @@ Linear (rollup views), Confluence, Slack (12+ channels she actively reads), Noti
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-05-27 | Lance | Initial draft of Sam — Staff Multi-Team PM archetype. |
+| 0.2 | 2026-05-30 | Lance | Added the handoff runbook generator to the tool-fit table as a producer-side tool (she hands multi-team epics off to RTB). |

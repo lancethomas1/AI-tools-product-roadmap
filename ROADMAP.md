@@ -42,7 +42,7 @@ Every PM feature moves through 5 stages. Each tool sits at one stage, consuming 
 | **1. Drafting** | New idea → first PRD | PRD drafting assistant |
 | **2. Planning** | PRD → tickets → sprint plan | Story & ticket writer · Spec → sprint decomposer |
 | **3. Execution** | Run the sprint, keep the backlog clean | Backlog grooming copilot · Weekly status synthesizer · Meeting → artifact pipeline · Proactive sprint agent · Incoming defect triage copilot · SLA / aging sentinel |
-| **4. Release** | Ship + tell people | Release notes generator · Stakeholder comms tailoring · Cross-functional launch checklist |
+| **4. Release** | Ship + tell people | Release notes generator · Stakeholder comms tailoring · Cross-functional launch checklist · Handoff runbook generator |
 | **5. Post-release** | Feedback + memory | PM knowledge agent · Living spec sync · Known-issue responder |
 
 ### The shared spine
@@ -97,6 +97,7 @@ Exploratory. Bigger bets, ambient ROI, dependent on earlier tools building trust
 - **PM knowledge agent** *(Stage 5 — Post-release · Tier B)* — RAG over all PRDs, decision logs, retros, and Slack to answer "why did we decide X?" or "what did we try last time?" with citations. *Deferred pending Tier B investment: a persistent index store and an SSO'd surface for non-licensed PMs.* ([spec](specs/pm-knowledge-agent.md))
 - **Living spec sync** *(Stage 5 — Post-release · Tier A)* — Keep PRDs and ticket descriptions in sync as either changes; flag drift between intent and implementation. Covers the in-flight PRD-update gap. ([spec](specs/living-spec-sync.md))
 - **Cross-functional launch checklist agent** *(Stage 4 — Release · Tier A)* — Auto-generates ready-for-launch checklists per feature, tracks cross-functional dependencies (legal, marketing, support), nags owners. ([spec](specs/cross-functional-launch-checklist.md))
+- **Handoff runbook generator** *(Stage 4 — Release · Tier A)* — Generates the operating runbook when a feature transfers from build to run, synthesized from the spine + merged PRs + incident history. A hard completeness gate on the launch checklist blocks handoff to RTB until the required sections (rollback, escalation, diagnosis) are real, not hollow. The one spine-rich RTB tool — it bootstraps the SLA sentinel, known-issue responder, and triage copilot. ([spec](specs/handoff-runbook-generator.md))
 - **Proactive sprint agent** *(Stage 3 — Execution · Tier A)* — Watches sprint progress and proposes interventions (re-scope, re-prioritize, flag risk to PM) before standup. ([spec](specs/proactive-sprint-agent.md))
 - **Known-issue responder** *(Stage 5 — Post-release · Tier B)* — A cite-or-refuse lookup surface that lets CS/Support self-serve "is this a known issue?" and "what's the status of X?" from the backlog, so the RTB PO stops being the human help desk. *Deferred pending Tier B investment: the same SSO-gated surface for non-licensed users the PM knowledge agent needs, plus a backlog status/decision index.* Serves the [RTB PO](personas/jordan-rtb-po.md). ([spec](specs/known-issue-responder.md))
 
