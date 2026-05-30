@@ -63,12 +63,17 @@ The pattern is **Jordan's backlog is a continuous arrival queue, and most of his
 
 ## Roadmap tool fit
 
+Three tools were specced specifically against this persona's arrival-queue, spine-less, SLA-driven workflow, because the general feature-PM tools assume a backlog that arrives on a plan and degrade exactly where Jordan's bottleneck lives. They lead the table as his primary tools.
+
 | Tool (from ROADMAP) | Role for Jordan | Why |
 |---|---|---|
-| **Backlog grooming copilot** (Next) | Primary | The single most-needed tool for his workflow. Duplicate detection, staleness, and recurring-cluster surfacing are his daily bottleneck. |
-| **Proactive sprint agent** (Later) | Primary | His standups should be reviewing the agent's findings, not discovering SLA risks or repeat incidents. |
-| **PM knowledge agent** (Later) | Primary | "Have we seen this defect before?" and "why is this P3?" are his most-asked queries. |
+| **Incoming defect triage copilot** (Next) | Primary (RTB-specific) | His #1 need. Per-arrival "is this new?" with a duplicate *cluster* and evidence, origin trace, SLA-clock start, and a draft triage — the half-his-morning archaeology, owned. Spine-less by design. ([spec](../specs/incoming-defect-triage-copilot.md)) |
+| **SLA / aging sentinel** (Now) | Primary (RTB-specific) | "SLA risk visible before it bites." Read-only watch over aging tickets, ranked and capped, ahead of standup and CS syncs. The RTB analog of the sprint agent — clock is the SLA, not the sprint. ([spec](../specs/sla-aging-sentinel.md)) |
+| **Known-issue responder** (Later) | Primary (RTB-specific) | Stops him being the human help desk. Lets CS/Support self-serve "is this known?" and "when does X ship?" with citations. ([spec](../specs/known-issue-responder.md)) |
+| **Backlog grooming copilot** (Next) | Primary | The weekly maintenance sweep — staleness, drift, and the standing-backlog duplicate audit. Arrival-time triage now belongs to the triage copilot; grooming owns the periodic clean of what's already in. |
+| **PM knowledge agent** (Later) | Primary | His own decision archaeology — "why is this P3?", "what did we try last time?". The CS-facing "is this a known issue?" slice is handled by the known-issue responder; this is the deeper, PM-side query surface. |
 | **Meeting → artifact pipeline** (Next) | Primary | Incident reviews and CS syncs produce action items he is currently extracting by hand. |
+| **Proactive sprint agent** (Later) | Rarely | Sprint-scoped, and Jordan has no fixed sprint. His version of "surface risk before standup" is the SLA / aging sentinel; the sprint agent itself is a poor fit. |
 | **Story & ticket writer** (Now) | Secondary | He writes most defect tickets himself, but uses it for small-enhancement bulk runs and to enforce a consistent AC shape on CS-filed reports. |
 | **Living spec sync** (Later) | Secondary | Useful where runbooks/specs drift from current behavior, but he has fewer PRDs to drift from than a feature PM. |
 | **Weekly status synthesizer** (Now) | Secondary | He reports up on SLA, defect close rate, and incident follow-up; useful but not the bottleneck. |
@@ -117,3 +122,4 @@ Linear (heaviest user on his team), the CS ticketing tool (read-write), Slack (#
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.1 | 2026-05-28 | Lance | Initial draft of Jordan — RTB PO archetype. Replaces the prior Platform PO (Devon) archetype to match the org's actual PO roles. |
+| 0.2 | 2026-05-30 | Lance | Reworked "Roadmap tool fit": added three RTB-specific tools (incoming defect triage copilot, SLA / aging sentinel, known-issue responder) as primary, clarified the division of labor with the grooming copilot and PM knowledge agent, and downgraded the sprint-scoped proactive sprint agent (poor fit — no fixed sprint). |
