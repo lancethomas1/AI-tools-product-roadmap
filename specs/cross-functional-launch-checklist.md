@@ -63,6 +63,7 @@ The tool's job is to make a **complete, owned, evidence-backed** launch checklis
 - Composite verdict: `not-ready` / `blockers-present` / `ready-pending-PM-sign-off` / `ready`.
 - Hard rule: any `block`-severity drift from Living Spec Sync flips verdict to `blockers-present`.
 - Hard rule: any item flagged "required for launch" and missing evidence flips verdict.
+- Hard rule: for a feature transferring to Run-The-Business, the [handoff runbook](./handoff-runbook-generator.md) is a required item — a `blocked`-tier runbook (a missing REQUIRED section such as rollback or escalation) flips the verdict to `blockers-present`. The runbook generator owns the runbook's completeness; the checklist hosts it as a gate.
 - Nagging: configurable per item — Slack DM to owner N days before launch, escalation to PM if unresolved.
 - Audit log: full history of who completed what when, with evidence references.
 
@@ -142,6 +143,7 @@ No standalone app surface (operating principle 5).
 - **Depends on:** *Release notes generator* (Now). "Release notes published" is a checklist item.
 - **Depends on:** Rubric Scorer, Spine Resolver, Source Synthesizer, Citation Verifier, PII Scrubber.
 - **Composes with:** *Stakeholder comms tailoring* (Next) — the customer-comms checklist item uses the tailored variants.
+- **Hosts:** *Handoff runbook generator* (Later) — for RTB-bound features, the runbook is a gating item on this checklist; its completeness tier drives a hard launch-blocker rule (above).
 - **Open:** Per-team launch rubric variance. Almost certainly per-team. How do we govern rubric quality? Lean on a shared baseline + per-team additions, reviewed at GA.
 - **Open:** Cross-functional partner onboarding. Legal and marketing aren't licensed PMs, so they edit via Confluence inline — but we need their attention on launch-week nags. Slack DMs work; email fallback?
 - **Open:** What's the "launch date" anchor? PM-set, but PRDs sometimes drift launch dates by weeks. Auto-update nag schedule when PM moves the date? Yes; surface "nag schedule rebased."

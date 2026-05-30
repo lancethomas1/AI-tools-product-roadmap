@@ -71,6 +71,7 @@ Mapped to lifecycle stages from [ROADMAP.md](../ROADMAP.md).
 | **Stakeholder comms tailoring** (Next) | Primary | The exec/Sales/CS variants she manually produces today. |
 | **Story & ticket writer** (Now) | Secondary | She drafts tickets herself most days, but uses it for PRD-section bulk runs. |
 | **Backlog grooming copilot** (Next) | Secondary | Useful, but Maya's growth backlog is high-churn; she dismisses many findings. Jordan is the primary user. |
+| **Handoff runbook generator** (Later) | Secondary (as producer) | When a growth feature transfers to RTB, she's the producer who must hand off a complete runbook. Her interest is doing it fast and not getting paged afterward; Jordan ([RTB PO](./jordan-rtb-po.md)) is the quality bar. ([spec](../specs/handoff-runbook-generator.md)) |
 | **PM knowledge agent** (Later) | Aspirational | When it exists, she expects to use it heavily for retros and "what did we try last time?". |
 
 ## Tools she lives in today
@@ -111,3 +112,4 @@ Linear, Confluence, Slack (3 channels she watches, 12 she half-watches), Notion 
 |---|---|---|---|
 | 0.1 | 2026-05-27 | Lance | Initial draft of Maya — Senior Growth PM archetype. |
 | 0.2 | 2026-05-28 | Lance | Updated Backlog grooming copilot row to cite Jordan (RTB PO) as the primary user; previously cited Devon (Platform PO), now retired. |
+| 0.3 | 2026-05-30 | Lance | Added the handoff runbook generator to the tool-fit table as a producer-side tool (she hands growth features off to RTB). |
