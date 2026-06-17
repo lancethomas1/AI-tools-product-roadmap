@@ -14,6 +14,8 @@ That dependency is not currently safe to bet on. This document redesigns the del
 
 This is not adversarial. It's the only way to make the roadmap something the product org actually owns — accountable for delivery — instead of something we pretend to own while waiting on someone else.
 
+The engine that fills this lane for the long tail of internal tools central engineering won't staff is covered separately in [BMAD as a Tier A build engine](./bmad-as-tier-a-build-engine.md): a single-operator build-time framework, gated by the same Tier A data declaration, handed to our spine and governance for its life.
+
 ## Tier A — Self-Sufficient Baseline
 
 The substrate that exists today, requiring zero net-new engineering work:
