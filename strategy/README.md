@@ -10,6 +10,7 @@ A strategy doc differs from a roadmap entry because it answers "given this const
 2. **[Engineering-optional delivery](./engineering-optional.md)** — How the roadmap and governance change when engineering's platform investment is treated as an enhancement tier rather than a precondition. Defines a Tier A baseline that ships on substrate product already has, and a Tier B menu engineering can fund when ready.
 3. **[Grounding, contract, destination](./grounding-contract-destination.md)** — Why the roadmap is a portfolio of integrated tools rather than "every PM gets a chat seat." The three structural properties (grounded in company data, ships under a contract, ends at a destination) that separate a roadmap tool from a chat session.
 4. **[Definition of Ready standardization](./definition-of-ready-standardization.md)** — A June 2026 Confluence audit found ~25 Definitions of Ready across 16 spaces, falsifying the toolchain's "the team's DoR" assumption. Why the DoR-consuming tools (story writer, Rubric Scorer) are the cheapest forcing function for converging on one machine-readable config per team.
+5. **[BMAD as a Tier A build engine](./bmad-as-tier-a-build-engine.md)** — Whether we're reinventing the wheel relative to the BMAD framework. Why BMAD is a single-operator build-time engine that fits the engineering-optional self-serve lane (gated by the Tier A data declaration), not a replacement for our ownership model, spine, or governance.
 
 ## How strategy docs get added
 
